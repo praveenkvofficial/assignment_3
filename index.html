@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-(function () {
-  // Create a script element for at.js
-  var script = document.createElement('script');
-  script.src = 'https://www.ets.org/content/dam/ets-org/target-js/at.js';
+    <script src="https://www.ets.org/content/dam/ets-org/target-js/at.js"></script>
 
-  // When at.js has loaded, fetch and apply the Target offer
-  script.onload = function () {
-    adobe.target.getOffer({
-      mbox: "target-global-mbox",
-      success: function (a) {
-        console.log("Adobe Target offer fetched:", a);
-        adobe.target.applyOffer({
+  <!-- After at.js is loaded, fetch and apply the Target offer -->
+  <script>
+    window.addEventListener('load', function () {
+      // Make sure adobe.target is available
+      if (window.adobe && adobe.target) {
+        adobe.target.getOffer({
           mbox: "target-global-mbox",
-          offer: a
+          success: function (offer) {
+            console.log("Adobe Target offer fetched:", offer);
+            adobe.target.applyOffer({
+              mbox: "target-global-mbox",
+              offer: offer
+            });
+          },
+          error: function (err, details) {
+            console.error("Failed to fetch Adobe Target offer:", err, details);
+          }
         });
-      },
-      error: function (a, b) {
-        console.error("Failed to fetch Adobe Target offer:", a, b);
+      } else {
+        console.error("Adobe Target not loaded yet");
       }
     });
-  };
-
-  // Append at.js to the head
-  document.head.appendChild(script);
-})();
-</script>
+  </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Page</title>
@@ -56,3 +54,4 @@
 </body>
 
 </html>
+
