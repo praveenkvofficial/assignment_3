@@ -1,6 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+(function () {
+  // Create a script element for at.js
+  var script = document.createElement('script');
+  script.src = 'https://www.ets.org/content/dam/ets-org/target-js/at.js';
+
+  // When at.js has loaded, fetch and apply the Target offer
+  script.onload = function () {
+    adobe.target.getOffer({
+      mbox: "target-global-mbox",
+      success: function (a) {
+        console.log("Adobe Target offer fetched:", a);
+        adobe.target.applyOffer({
+          mbox: "target-global-mbox",
+          offer: a
+        });
+      },
+      error: function (a, b) {
+        console.error("Failed to fetch Adobe Target offer:", a, b);
+      }
+    });
+  };
+
+  // Append at.js to the head
+  document.head.appendChild(script);
+})();
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Page</title>
@@ -27,4 +54,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
